@@ -1,0 +1,4 @@
+{
+  "alias": "knex",
+  "dependencies": ["bajo-db"]
+}

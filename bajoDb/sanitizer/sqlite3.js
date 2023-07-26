@@ -2,12 +2,12 @@ import path from 'path'
 
 async function sqlite3 (item) {
   const { fatal, getConfig, importPkg, pathResolve } = this.bajo.helper
-  if (!item.connection) fatal('\'%s@%s\' key is required', 'connection', item.name, { code: 'BAJODB_SQLITE3_MISSING_CONNECTION_KEY', payload: item })
+  if (!item.connection) fatal('\'%s@%s\' key is required', 'connection', item.name, { code: 'BAJODBKNEX_SQLITE3_MISSING_CONNECTION_KEY', payload: item })
   const { isEmpty, pick } = await importPkg('lodash-es')
   const fs = await importPkg('fs-extra')
   const config = getConfig()
   const newItem = pick(item, ['name', 'type', 'connection'])
-  if (!item.connection.filename) fatal('\'%s@%s\' key is required', 'filename', item.name, { code: 'BAJODB_SQLITE3_MISSING_CONNECTION_FILENAME', payload: item })
+  if (!item.connection.filename) fatal('\'%s@%s\' key is required', 'filename', item.name, { code: 'BAJODBKNEX_SQLITE3_MISSING_CONNECTION_FILENAME', payload: item })
   if (item.connection.filename === ':memory:') {
     newItem.memory = true
   } else if (!path.isAbsolute(item.connection.filename)) {

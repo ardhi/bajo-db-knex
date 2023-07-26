@@ -1,13 +1,11 @@
-import getKnex from '../../lib/get-knex.js'
-
 async function findRecord ({ schema, filter = {}, options = {} } = {}) {
   const { importPkg } = this.bajo.helper
-  const { prepPagination, pickRecord } = this.bajoDb.helper
+  const { prepPagination, getInfo } = this.bajoDb.helper
   const { forOwn } = await importPkg('lodash-es')
-  const { knex } = await getKnex.call(this, schema)
-  const { noLimit, fields } = options
+  const { instance } = await getInfo(schema)
+  const { noLimit } = options
   const { limit, skip, query, sort } = await prepPagination(filter, schema)
-  let op = knex(schema.collName)
+  let op = instance.client(schema.collName)
   if (query) op = query.querySQL(op)
   if (!noLimit) op.limit(limit, { skipBinding: true }).offset(skip)
   if (sort) {
@@ -17,11 +15,7 @@ async function findRecord ({ schema, filter = {}, options = {} } = {}) {
     })
     op.orderBy(sorts)
   }
-  const results = await op
-  for (const i in results) {
-    results[i] = await pickRecord(results[i], fields)
-  }
-  return results
+  return await op
 }
 
 export default findRecord

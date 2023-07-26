@@ -1,20 +1,14 @@
-import getKnex from '../../lib/get-knex.js'
 import getRecord from './get-record.js'
 
 async function updateRecord ({ schema, id, body, options } = {}) {
-  const { sanitizeBody, pickRecord } = this.bajoDb.helper
-  const { knex, returning } = await getKnex.call(this, schema)
-  const { thrownNotFound = true, returnOldNew, fields } = options
-  let old = await getRecord.call(this, { schema, id, options: { thrownNotFound } })
-  old = await pickRecord(old, fields)
-  const newBody = await sanitizeBody({ body, schema, partial: true })
-  delete newBody.id
-  let result = await knex(schema.collName)
+  const { getInfo } = this.bajoDb.helper
+  const { instance, returning } = await getInfo(schema)
+  const { thrownNotFound = true } = options
+  const old = await getRecord.call(this, { schema, id, options: { thrownNotFound } })
+  const result = await instance.client(schema.collName)
     .where('id', id)
-    .update(newBody, ...returning)
-  result = await pickRecord(result[0], fields)
-  if (returnOldNew) return { old, new: result }
-  return result
+    .update(body, ...returning)
+  return { old, new: result[0] }
 }
 
 export default updateRecord

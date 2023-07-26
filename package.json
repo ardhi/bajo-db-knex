@@ -27,6 +27,8 @@
   },
   "homepage": "https://github.com/ardhi/bajo-db-knex#readme",
   "dependencies": {
-    "knex": "^2.5.1"
+    "knex": "^2.5.1",
+    "knex-firebird-dialect": "^1.4.6",
+    "knex-rqlite": "^2.0.3"
   }
 }

@@ -9,5 +9,7 @@
   "pgnative": "pg-native",
   "postgres": "pg",
   "redshift": "pg",
-  "sqlite3": "sqlite3"
+  "sqlite3": "sqlite3",
+  "firebird": "node-firebird",
+  "rqlite": "rqlite-js"
 }

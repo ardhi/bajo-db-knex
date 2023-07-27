@@ -1,5 +1,5 @@
 {
   "type": ["better-sqlite3", "cockroachdb", "mssql", "mysql", "mysql2", "oracle",
-    "oracledb", "pgnative", "postgres", "redshift", "sqlite3", "firebird"],
+    "oracledb", "pgnative", "postgres", "redshift", "sqlite3"],
   "driver": "knex"
 }

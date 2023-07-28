@@ -3,13 +3,17 @@ async function findRecord ({ schema, filter = {}, options = {} } = {}) {
   const { prepPagination, getInfo } = this.bajoDb.helper
   const { forOwn } = await importPkg('lodash-es')
   const { instance } = await getInfo(schema)
-  const { noLimit } = options
+  const { noLimit, dataOnly } = options
   const { limit, skip, query, sort, page } = await prepPagination(filter, schema)
   // count
-  let count = instance.client(schema.collName)
-  if (query) count = query.querySQL(count)
-  count = await count.count('*', { as: 'cnt' })
-  count = count[0].cnt
+  let count
+  if (dataOnly) count = 0
+  else {
+    count = instance.client(schema.collName)
+    if (query) count = query.querySQL(count)
+    count = await count.count('*', { as: 'cnt' })
+    count = count[0].cnt
+  }
   // data
   let data = instance.client(schema.collName)
   if (query) data = query.querySQL(data)

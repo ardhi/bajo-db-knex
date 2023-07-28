@@ -7,7 +7,7 @@ async function removeRecord ({ schema, id, options = {} } = {}) {
   await instance.client(schema.collName)
     .where('id', id)
     .del(...returning)
-  return { old: rec }
+  return { old: rec.data }
 }
 
 export default removeRecord

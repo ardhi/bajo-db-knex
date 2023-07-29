@@ -5,7 +5,6 @@ async function rqlite (item) {
   const newItem = pick(item, ['name', 'type', 'connection'])
   newItem.connection.host = newItem.connection.host || 'localhost'
   newItem.connection.port = newItem.connection.port || 4001
-  newItem.memory = false
   return newItem
 }
 

@@ -7,7 +7,7 @@ async function update ({ schema, id, body, options } = {}) {
   const result = await instance.client(schema.collName)
     .where('id', id)
     .update(body, ...returning)
-  return { old: old.data, new: result[0] }
+  return { oldData: old.data, data: result[0] }
 }
 
 export default update

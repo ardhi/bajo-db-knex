@@ -1,8 +1,9 @@
-async function createTable ({ schema, instance }) {
+async function create (schema) {
   const { importPkg } = this.bajo.helper
+  const { getInfo } = this.bajoDb.helper
   const { has, isPlainObject, isString, omit, merge, cloneDeep } = await importPkg('lodash-es')
-  const knex = instance.client
-  await knex.schema.createTable(schema.collName, table => {
+  const { instance } = await getInfo(schema)
+  await instance.client.schema.createTable(schema.collName, table => {
     for (let p of schema.properties) {
       p = cloneDeep(p)
       if (p.type === 'object') p.type = 'json'
@@ -33,4 +34,4 @@ async function createTable ({ schema, instance }) {
   })
 }
 
-export default createTable
+export default create

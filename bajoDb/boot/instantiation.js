@@ -1,7 +1,7 @@
 import knex from 'knex'
-import createTable from '../../lib/create-table.js'
+import collCreate from '../method/coll/create.js'
 import FirebirdDialect from 'knex-firebird-dialect'
-import collExists from '../method/coll-exists.js'
+import collExists from '../method/coll/exists.js'
 
 const extDialect = {
   firebird: FirebirdDialect.default
@@ -24,7 +24,7 @@ async function instantiation ({ connection, schemas, noRebuild }) {
     const exists = await collExists.call(this, schema)
     if (!exists || instance.memory) {
       try {
-        await createTable.call(this, { schema, instance })
+        await collCreate.call(this, schema)
         log.trace('Model \'%s@%s\' successfully built on the fly', schema.name, connection.name)
       } catch (err) {
         fatal('Unable to build model \'%s@%s\': %s', schema.name, connection.name, err.message)

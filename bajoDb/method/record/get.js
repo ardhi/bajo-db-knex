@@ -1,4 +1,4 @@
-async function getRecord ({ schema, id, options = {} } = {}) {
+async function get ({ schema, id, options = {} } = {}) {
   const { error } = this.bajo.helper
   const { getInfo } = this.bajoDb.helper
   const { instance } = await getInfo(schema)
@@ -9,4 +9,4 @@ async function getRecord ({ schema, id, options = {} } = {}) {
   return { data: result[0] }
 }
 
-export default getRecord
+export default get

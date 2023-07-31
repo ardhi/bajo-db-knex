@@ -9,7 +9,6 @@ const extDialect = {
 
 async function instantiation ({ connection, schemas, noRebuild }) {
   const { importPkg, log, fatal, readJson, currentLoc } = this.bajo.helper
-  const { collFixture } = this.bajoDb.helper
   const { merge, pick } = await importPkg('lodash-es')
   this.bajoDbKnex.instances = this.bajoDbKnex.instances || []
   const driverPkg = readJson(`${currentLoc(import.meta).dir}/../../lib/driver-pkg.json`)
@@ -28,7 +27,6 @@ async function instantiation ({ connection, schemas, noRebuild }) {
     if (!exists) {
       try {
         await collCreate.call(this, schema)
-        if (isMem) await collFixture(schema)
         log.trace('Model \'%s@%s\' successfully built on the fly', schema.name, connection.name)
       } catch (err) {
         fatal('Unable to build model \'%s@%s\': %s', schema.name, connection.name, err.message)

@@ -16,6 +16,7 @@ async function sqlite3 (item) {
     newItem.connection.filename = file
   }
   newItem.useNullAsDefault = true
+  newItem.memory = item.connection.filename === ':memory:'
   return newItem
 }
 

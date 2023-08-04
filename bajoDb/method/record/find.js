@@ -9,13 +9,13 @@ async function find ({ schema, filter = {}, options = {} } = {}) {
   let count
   if (dataOnly) count = 0
   else {
-    count = instance.client(schema.collName)
+    count = instance.client(schema.repoName)
     if (query) count = query.querySQL(count)
     count = await count.count('*', { as: 'cnt' })
     count = count[0].cnt
   }
   // data
-  let data = instance.client(schema.collName)
+  let data = instance.client(schema.repoName)
   if (query) data = query.querySQL(data)
   if (!noLimit) data.limit(limit, { skipBinding: true }).offset(skip)
   if (sort) {

@@ -1,14 +1,14 @@
-import collCreate from './coll/create.js'
-import collExists from './coll/exists.js'
-import collDrop from './coll/drop.js'
+import repoCreate from './repo/create.js'
+import repoExists from './repo/exists.js'
+import repoDrop from './repo/drop.js'
 
 async function buildModel ({ schema, instance, spinner }) {
   const { getConfig } = this.bajo.helper
   const config = getConfig()
-  if (await collExists.call(this, schema)) {
+  if (await repoExists.call(this, schema)) {
     if (config.force) {
       try {
-        await collDrop.call(this, schema)
+        await repoDrop.call(this, schema)
         spinner.setText('Model \'%s\' successfully dropped', schema.name)
       } catch (err) {
         spinner.fail('Error on dropping model \'%s\': %s', schema.name, err.message)
@@ -20,7 +20,7 @@ async function buildModel ({ schema, instance, spinner }) {
     }
   }
   try {
-    await collCreate.call(this, schema)
+    await repoCreate.call(this, schema)
     spinner.succeed('Model \'%s\' successfully created', schema.name)
     return true
   } catch (err) {

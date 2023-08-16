@@ -17,8 +17,8 @@ async function firebird (item) {
     fs.ensureDirSync(path.dirname(file))
     newItem.connection.database = file
   }
-  newItem.connection.host = newItem.connection.host || 'localhost'
-  newItem.connection.port = newItem.connection.port || 3050
+  newItem.connection.host = newItem.connection.host ?? 'localhost'
+  newItem.connection.port = newItem.connection.port ?? 3050
   newItem.createDatabaseIfNotExists = true
   return newItem
 }

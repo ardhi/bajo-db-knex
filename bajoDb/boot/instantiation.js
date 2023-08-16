@@ -10,10 +10,10 @@ const extDialect = {
 async function instantiation ({ connection, schemas, noRebuild }) {
   const { importPkg, log, fatal, readJson, currentLoc } = this.bajo.helper
   const { merge, pick } = await importPkg('lodash-es')
-  this.bajoDbKnex.instances = this.bajoDbKnex.instances || []
+  this.bajoDbKnex.instances = this.bajoDbKnex.instances ?? []
   const driverPkg = readJson(`${currentLoc(import.meta).dir}/../../lib/driver-pkg.json`)
   const dialectFile = `knex/lib/dialects/${connection.type}/index.js`
-  const Dialect = extDialect[connection.type] || (await import(dialectFile)).default
+  const Dialect = extDialect[connection.type] ?? (await import(dialectFile)).default
   const driver = await importPkg(`app:${driverPkg[connection.type]}`)
   Dialect.prototype._driver = () => driver
   const instance = pick(connection, ['name', 'type'])

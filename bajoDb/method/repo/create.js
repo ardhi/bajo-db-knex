@@ -8,7 +8,7 @@ async function create (schema) {
       p = cloneDeep(p)
       if (p.type === 'object') p.type = 'json'
       const args = []
-      for (const a of ['length', 'precision', 'kind']) {
+      for (const a of ['maxLength', 'precision', 'kind']) {
         if (has(p, a)) args.push(p[a])
         if (a === 'precision' && has(p, 'scale')) args.push(p.scale)
       }

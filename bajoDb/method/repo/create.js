@@ -6,7 +6,7 @@ async function create (schema) {
   await instance.client.schema.createTable(schema.repoName, table => {
     for (let p of schema.properties) {
       p = cloneDeep(p)
-      if (p.type === 'object') p.type = 'json'
+      if (p.type === 'object') p.type = 'text'
       const args = []
       for (const a of ['maxLength', 'precision', 'kind']) {
         if (has(p, a)) args.push(p[a])

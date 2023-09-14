@@ -2,13 +2,13 @@ import path from 'path'
 
 async function firebird (item) {
   const { fatal, getConfig, importPkg, resolvePath } = this.bajo.helper
-  if (!item.connection) fatal('\'%s@%s\' key is required', 'connection', item.name, { code: 'BAJODBKNEX_FIREBIRD_MISSING_CONNECTION_KEY', payload: item })
+  if (!item.connection) fatal('\'%s@%s\' key is required', 'connection', item.name, { payload: item })
   const { isEmpty, pick } = await importPkg('lodash-es')
   const fs = await importPkg('fs-extra')
   const config = getConfig()
   const newItem = pick(item, ['name', 'type', 'connection'])
   for (const i of ['database', 'user', 'password']) {
-    if (!item.connection[i]) fatal('\'%s@%s\' key is required', i, item.name, { code: 'BAJODBKNEX_FIREBIRD_MISSING_CONNECTION_' + i.toUpperCase(), payload: item })
+    if (!item.connection[i]) fatal('\'%s@%s\' key is required', i, item.name, { payload: item })
   }
   if (!path.isAbsolute(item.connection.database)) {
     let file = resolvePath(`${config.dir.data}/db/${item.connection.database}`)

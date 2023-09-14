@@ -1,6 +1,6 @@
 async function rqlite (item) {
   const { fatal, importPkg } = this.bajo.helper
-  if (!item.connection) fatal('\'%s@%s\' key is required', 'connection', item.name, { code: 'BAJODBKNEX_RQLITE_MISSING_CONNECTION_KEY', payload: item })
+  if (!item.connection) fatal('\'%s@%s\' key is required', 'connection', item.name, { payload: item })
   const { pick } = await importPkg('lodash-es')
   const newItem = pick(item, ['name', 'type', 'connection'])
   newItem.connection.host = newItem.connection.host ?? 'localhost'

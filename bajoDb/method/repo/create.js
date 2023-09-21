@@ -31,6 +31,12 @@ async function create (schema) {
       if (p.unsigned && ['integer', 'smallint', 'float', 'double'].indexOf(p.type)) col.unsigned()
       if (p.comment) col.comment(p.comment)
     }
+    for (const idx of schema.indexes ?? []) {
+      const opts = omit(idx, ['name', 'unique', 'fields'])
+      if (idx.name) opts.indexName = idx.name
+      if (idx.unique) table.unique(idx.fields, opts)
+      else table.index(idx.fields, idx.name, opts)
+    }
   })
 }
 

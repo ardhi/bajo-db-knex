@@ -10,13 +10,13 @@ async function find ({ schema, filter = {}, options = {} } = {}) {
   let count
   if (dataOnly) count = 0
   else {
-    count = instance.client(schema.repoName)
+    count = instance.client(schema.collName)
     if (query) count = mongoKnex(count, query)
     count = await count.count('*', { as: 'cnt' })
     count = count[0].cnt
   }
   // data
-  let data = instance.client(schema.repoName)
+  let data = instance.client(schema.collName)
   if (query) data = mongoKnex(data, query)
   if (!noLimit) data.limit(limit, { skipBinding: true }).offset(skip)
   if (sort) {

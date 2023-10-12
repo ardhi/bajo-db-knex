@@ -8,7 +8,7 @@ async function update ({ schema, id, body, options } = {}) {
     if (p.type === 'object' && isSet(body[p.name])) body[p.name] = JSON.stringify(body[p.name])
   }
   const old = await getRecord.call(this, { schema, id })
-  const result = await instance.client(schema.repoName)
+  const result = await instance.client(schema.collName)
     .where('id', id)
     .update(body, ...returning)
   return { oldData: old.data, data: result[0] }

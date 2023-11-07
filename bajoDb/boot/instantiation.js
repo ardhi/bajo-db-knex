@@ -8,17 +8,18 @@ const extDialect = {
 }
 
 async function instantiation ({ connection, schemas, noRebuild }) {
-  const { importPkg, log, fatal, readJson, currentLoc, error } = this.bajo.helper
-  const { merge, pick } = await importPkg('lodash-es')
+  const { importPkg, log, fatal, error } = this.bajo.helper
+  const { drivers } = this.bajoDbKnex.helper
+  const { merge, pick, find } = await importPkg('lodash-es')
   this.bajoDbKnex.instances = this.bajoDbKnex.instances ?? []
-  const driverPkg = readJson(`${currentLoc(import.meta).dir}/../../lib/driver-pkg.json`)
+  const driverPkg = find(drivers, { name: connection.type })
   const dialectFile = `knex/lib/dialects/${connection.type}/index.js`
   const Dialect = extDialect[connection.type] ?? (await import(dialectFile)).default
   let driver
   try {
-    driver = await importPkg(`app:${driverPkg[connection.type]}`, { thrownNotFound: true })
+    driver = await importPkg(`app:${driverPkg.adapter}`, { thrownNotFound: true })
   } catch (err) {
-    throw error('Problem with \'%s\' driver file. Not installed yet?', driverPkg[connection.type])
+    throw error('Problem with \'%s\' driver file. Not installed yet?', driverPkg.adapter)
   }
   Dialect.prototype._driver = () => driver
   const instance = pick(connection, ['name', 'type'])

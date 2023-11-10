@@ -8,12 +8,15 @@ const extDialect = {
 }
 
 async function instantiation ({ connection, schemas, noRebuild }) {
-  const { importPkg, log, fatal, error } = this.bajo.helper
+  const { importPkg, log, fatal, error, currentLoc } = this.bajo.helper
   const { drivers } = this.bajoDbKnex.helper
   const { merge, pick, find } = await importPkg('lodash-es')
+  const fs = await importPkg('fs-extra')
   this.bajoDbKnex.instances = this.bajoDbKnex.instances ?? []
   const driverPkg = find(drivers, { name: connection.type })
-  const dialectFile = `knex/lib/dialects/${connection.type}/index.js`
+  const dialect = driverPkg.dialect ?? connection.type
+  let dialectFile = `${currentLoc(import.meta).dir}/dialect/${dialect}.js`
+  if (!fs.existsSync(dialectFile)) dialectFile = `knex/lib/dialects/${dialect}/index.js`
   const Dialect = extDialect[connection.type] ?? (await import(dialectFile)).default
   let driver
   try {

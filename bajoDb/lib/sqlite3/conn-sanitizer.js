@@ -1,6 +1,6 @@
 import path from 'path'
 
-async function sqlite3 (item) {
+async function connSanitizer (item) {
   const { fatal, importPkg, getPluginDataDir } = this.bajo.helper
   if (!item.connection) fatal('\'%s@%s\' key is required', 'connection', item.name, { payload: item })
   const { isEmpty, pick } = await importPkg('lodash-es')
@@ -19,4 +19,4 @@ async function sqlite3 (item) {
   return newItem
 }
 
-export default sqlite3
+export default connSanitizer

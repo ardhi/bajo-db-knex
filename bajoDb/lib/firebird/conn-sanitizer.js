@@ -1,6 +1,6 @@
 import path from 'path'
 
-async function firebird (item) {
+async function connSanitizer (item) {
   const { fatal, getConfig, importPkg, resolvePath } = this.bajo.helper
   if (!item.connection) fatal('\'%s@%s\' key is required', 'connection', item.name, { payload: item })
   const { isEmpty, pick } = await importPkg('lodash-es')
@@ -23,4 +23,4 @@ async function firebird (item) {
   return newItem
 }
 
-export default firebird
+export default connSanitizer

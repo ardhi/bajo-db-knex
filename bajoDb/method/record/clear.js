@@ -1,9 +1,12 @@
 async function clear ({ schema, options = {} } = {}) {
+  const { importModule, currentLoc } = this.bajo.helper
   const { truncate = true } = options
   const { getInfo } = this.bajoDb.helper
-  const { instance } = await getInfo(schema)
-  if (truncate) await instance.client(schema.collName).truncate()
-  else await instance.client(schema.collName).del()
+  const { instance, driver } = await getInfo(schema)
+  const method = truncate ? 'truncate' : 'del'
+  const mod = await importModule(`${currentLoc(import.meta).dir}/../../lib/${driver.type}/record-clear.js`)
+  if (mod) await mod.call(this, { schema, options })
+  else await instance.client(schema.collName)[method]()
   return true
 }
 

@@ -1,4 +1,4 @@
-async function rqlite (item) {
+async function connSanitizer (item) {
   const { fatal, importPkg } = this.bajo.helper
   if (!item.connection) fatal('\'%s@%s\' key is required', 'connection', item.name, { payload: item })
   const { pick } = await importPkg('lodash-es')
@@ -8,4 +8,4 @@ async function rqlite (item) {
   return newItem
 }
 
-export default rqlite
+export default connSanitizer

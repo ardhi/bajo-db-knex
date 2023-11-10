@@ -53,5 +53,13 @@ export default [
     name: 'sqlite3',
     adapter: 'sqlite3',
     returning: true
+  },
+  {
+    name: 'manticore',
+    dialect: 'mysql',
+    adapter: 'mysql',
+    forceDefaultId: true,
+    lowerCaseColl: true,
+    returning: false
   }
 ]

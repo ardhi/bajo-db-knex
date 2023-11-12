@@ -6,9 +6,9 @@ const stype = {
   float: 'float',
   double: 'float',
   boolean: 'bool',
-  date: 'date',
-  datetime: 'datetime',
-  time: 'time',
+  date: 'timestamp',
+  datetime: 'timestamp',
+  time: 'timestamp',
   timestamp: 'timestamp',
   object: 'text'
 }

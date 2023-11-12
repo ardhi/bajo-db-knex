@@ -1,3 +1,5 @@
+import sanitizeOutput from './_sanitize-output.js'
+
 async function find ({ schema, filter = {}, options = {} } = {}) {
   const { importPkg } = this.bajo.helper
   const { prepPagination, getInfo } = this.bajoDb.helper
@@ -19,7 +21,9 @@ async function find ({ schema, filter = {}, options = {} } = {}) {
   const item = data.toSQL().toNative()
   item.sql = item.sql.replaceAll('`' + schema.collName + '`.', '')
   const result = await instance.client.raw(item.sql, item.bindings)
-  return result[0]
+  return result[0].map(r => {
+    return sanitizeOutput.call(this, r, schema)
+  })
 }
 
 export default find

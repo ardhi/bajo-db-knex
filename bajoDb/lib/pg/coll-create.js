@@ -1,10 +1,8 @@
 async function create (schema) {
-  const { importPkg, currentLoc, importModule } = this.bajo.helper
+  const { importPkg } = this.bajo.helper
   const { getInfo } = this.bajoDb.helper
   const { has, omit, cloneDeep } = await importPkg('lodash-es')
   const { instance, driver } = await getInfo(schema)
-  const mod = await importModule(`${currentLoc(import.meta).dir}/../../lib/${driver.type}/coll-create.js`)
-  if (mod) return await mod.call(this, schema)
   await instance.client.schema.createTable(schema.collName, table => {
     for (let p of schema.properties) {
       if (p.name === 'id' && driver.forceDefaultId) continue
@@ -45,6 +43,12 @@ async function create (schema) {
       if (idx.name) opts.indexName = idx.name
       if (idx.unique) table.unique(idx.fields, opts)
       else table.index(idx.fields, idx.name, opts)
+    }
+    for (const ft of schema.fullText ?? []) {
+      for (const f of ft.fields ?? []) {
+        table.specificType(f, 'tsvector')
+        table.index(f, null, 'gin')
+      }
     }
   })
 }

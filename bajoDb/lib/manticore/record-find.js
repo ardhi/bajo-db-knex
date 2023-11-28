@@ -2,7 +2,7 @@ import sanitizeOutput from './_sanitize-output.js'
 import applyFulltext from './_apply-fulltext.js'
 
 async function find ({ schema, filter = {}, options = {} } = {}) {
-  const { importPkg } = this.bajo.helper
+  const { importPkg, dayjs } = this.bajo.helper
   const { prepPagination, getInfo } = this.bajoDb.helper
   const { forOwn } = await importPkg('lodash-es')
   const mongoKnex = await importPkg('bajo-db:@tryghost/mongo-knex')
@@ -22,6 +22,10 @@ async function find ({ schema, filter = {}, options = {} } = {}) {
   }
   const item = data.toSQL().toNative()
   item.sql = item.sql.replaceAll('`' + schema.collName + '`.', '')
+  for (const i in item.bindings) {
+    const val = item.bindings[i]
+    if (val instanceof Date) item.bindings[i] = dayjs(val).unix()
+  }
   const result = await instance.client.raw(item.sql, item.bindings)
   return result[0].map(r => {
     return sanitizeOutput.call(this, r, schema)

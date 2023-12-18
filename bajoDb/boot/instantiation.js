@@ -3,6 +3,10 @@ import collCreate from '../method/coll/create.js'
 import FirebirdDialect from 'knex-firebird-dialect'
 import collExists from '../method/coll/exists.js'
 
+const stripWarns = [
+  '.returning() is not supported by mysql and will not have any effect'
+]
+
 const extDialect = {
   firebird: FirebirdDialect.default
 }
@@ -26,7 +30,20 @@ async function instantiation ({ connection, schemas, noRebuild }) {
   }
   Dialect.prototype._driver = () => driver
   const instance = pick(connection, ['name', 'type'])
-  instance.client = knex(merge({}, connection, { log, client: Dialect }))
+  const knexLog = {
+    error: log.error,
+    debug: log.debug,
+    deprecate: log.warn,
+    warn: msg => {
+      let match
+      for (const w of stripWarns) {
+        if (msg.includes(w)) match = true
+      }
+      if (match) return
+      return log.warn(msg)
+    }
+  }
+  instance.client = knex(merge({}, connection, { log: knexLog, client: Dialect }))
   this.bajoDbKnex.instances.push(instance)
   const isMem = connection.type === 'sqlite3' && connection.connection.filename === ':memory:'
   if (isMem) noRebuild = false

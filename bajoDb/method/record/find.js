@@ -6,8 +6,8 @@ async function find ({ schema, filter = {}, options = {} } = {}) {
   const { forOwn } = await importPkg('lodash-es')
   const mongoKnex = await importPkg('bajo-db:@tryghost/mongo-knex')
   const { instance, driver } = await getInfo(schema)
-  const { noLimit, dataOnly } = options
-  const { limit, skip, query, sort, page, noCount } = await prepPagination(filter, schema)
+  const { noLimit, dataOnly, noCount } = options
+  const { limit, skip, query, sort, page } = await prepPagination(filter, schema)
   let count = 0
   if (!noCount && !dataOnly) count = (await getCount.call(this, { schema, filter, options }) || {}).data
   let result

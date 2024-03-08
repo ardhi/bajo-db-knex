@@ -11,7 +11,7 @@ export async function create (schema, applyTable, applyColumn) {
         table.specificType(p.name, p.specificType)
         continue
       }
-      if (p.type === 'object') p.type = 'text'
+      if (['object', 'array'].includes(p.type)) p.type = 'text'
       const args = []
       for (const a of ['maxLength', 'precision', 'kind']) {
         if (has(p, a)) args.push(p[a])

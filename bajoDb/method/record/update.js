@@ -6,7 +6,7 @@ async function update ({ schema, id, body, options } = {}) {
   const { pick } = await importPkg('lodash-es')
   const { instance, returning, driver } = await getInfo(schema)
   for (const p of schema.properties) {
-    if (p.type === 'object' && isSet(body[p.name])) body[p.name] = JSON.stringify(body[p.name])
+    if (['object', 'array'].includes(p.type) && isSet(body[p.name])) body[p.name] = JSON.stringify(body[p.name])
   }
   const old = await getRecord.call(this, { schema, id })
   let result

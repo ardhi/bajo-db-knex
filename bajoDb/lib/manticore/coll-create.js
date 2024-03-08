@@ -10,7 +10,8 @@ const stype = {
   datetime: 'timestamp',
   time: 'timestamp',
   timestamp: 'timestamp',
-  object: 'text'
+  object: 'text',
+  array: 'text'
 }
 
 async function collCreate (schema) {

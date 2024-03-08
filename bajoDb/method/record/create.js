@@ -6,7 +6,7 @@ async function create ({ schema, body, options = {} } = {}) {
   const { pick } = await importPkg('lodash-es')
   const { instance, returning, driver } = await getInfo(schema)
   for (const p of schema.properties) {
-    if (p.type === 'object' && isSet(body[p.name])) body[p.name] = JSON.stringify(body[p.name])
+    if (['object', 'array'].includes(p.type) && isSet(body[p.name])) body[p.name] = JSON.stringify(body[p.name])
   }
   let result
   const mod = await importModule(`${currentLoc(import.meta).dir}/../../lib/${driver.type}/record-create.js`)

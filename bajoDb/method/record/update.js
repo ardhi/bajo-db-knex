@@ -11,7 +11,7 @@ async function update ({ schema, id, body, options } = {}) {
   const old = await getRecord.call(this, { schema, id })
   let result
   const mod = await importModule(`${currentLoc(import.meta).dir}/../../lib/${driver.type}/record-update.js`)
-  if (mod) result = await mod.call(this, { schema, id, body, options })
+  if (mod) result = await mod.call(this, { schema, id, body, oldBody: old.data, options })
   else result = await instance.client(schema.collName).where('id', id).update(body, ...returning)
   if (!driver.returning) {
     const resp = await getRecord.call(this, { schema, id, options: { thrownNotFound: false } })

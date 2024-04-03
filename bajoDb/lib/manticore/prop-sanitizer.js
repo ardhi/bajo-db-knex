@@ -6,6 +6,8 @@ async function propSanitizer ({ prop, schema, driver }) {
   const def = propType[prop.type]
   if (prop.name === 'id') {
     prop.type = 'integer'
+    delete prop.maxLength
+    delete prop.minLength
   } else {
     if (prop.type === 'string') {
       def.minLength = prop.minLength ?? 0

@@ -7,7 +7,10 @@ async function connSanitizer (item) {
   const fs = await importPkg('fs-extra')
   const newItem = pick(item, ['name', 'type', 'connection'])
   if (!item.connection.filename) fatal('\'%s@%s\' key is required', 'filename', item.name, { payload: item })
-  if (item.connection.filename !== ':memory:' && !path.isAbsolute(item.connection.filename)) {
+  const isMem = item.connection.filename === ':memory:'
+  const isAbs = path.isAbsolute(item.connection.filename)
+  const isUp = item.connection.filename.startsWith('../')
+  if (!(isMem || isAbs || isUp)) {
     let file = `${getPluginDataDir('bajoDb')}/db/${item.connection.filename}`
     const ext = path.extname(file)
     if (isEmpty(ext)) file += '.sqlite3'

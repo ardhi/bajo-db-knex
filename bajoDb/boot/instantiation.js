@@ -1,6 +1,5 @@
 import knex from 'knex'
 import collCreate from '../method/coll/create.js'
-import FirebirdDialect from 'knex-firebird-dialect'
 import collExists from '../method/coll/exists.js'
 
 const stripWarns = [
@@ -8,7 +7,6 @@ const stripWarns = [
 ]
 
 const extDialect = {
-  firebird: FirebirdDialect.default
 }
 
 async function instantiation ({ connection, schemas, noRebuild }) {

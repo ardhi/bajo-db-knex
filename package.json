@@ -1,6 +1,6 @@
 {
   "name": "bajo-db-knex",
-  "version": "0.2.13",
+  "version": "0.2.18",
   "description": "Bajo DB Knex/SQL driver for Bajo Framework",
   "main": "index.js",
   "scripts": {
@@ -27,8 +27,6 @@
   },
   "homepage": "https://github.com/ardhi/bajo-db-knex#readme",
   "dependencies": {
-    "knex": "^3.1.0",
-    "knex-firebird-dialect": "^1.4.6",
-    "knex-rqlite": "^2.0.3"
+    "knex": "^3.1.0"
   }
 }

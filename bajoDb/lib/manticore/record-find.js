@@ -2,10 +2,11 @@ import sanitizeOutput from './_sanitize-output.js'
 import applyFulltext from './_apply-fulltext.js'
 
 async function find ({ schema, filter = {}, options = {} } = {}) {
-  const { importPkg, dayjs } = this.bajo.helper
+  const { importPkg, dayjs, getConfig } = this.bajo.helper
   const { prepPagination, getInfo } = this.bajoDb.helper
-  const { forOwn } = await importPkg('lodash-es')
+  const { forOwn, get } = await importPkg('lodash-es')
   const mongoKnex = await importPkg('bajo-db:@tryghost/mongo-knex')
+  const cfg = getConfig('bajoDbKnex')
   const { instance } = await getInfo(schema)
   const { noLimit } = options
   const { limit, skip, query, sort, match } = await prepPagination(filter, schema)
@@ -22,6 +23,8 @@ async function find ({ schema, filter = {}, options = {} } = {}) {
   }
   const item = data.toSQL().toNative()
   item.sql = item.sql.replaceAll('`' + schema.collName + '`.', '')
+  const maxMatches = get(options, 'req.query.maxMatches', cfg.manticore.maxMatches)
+  item.sql += ` option max_matches=${maxMatches}`
   for (const i in item.bindings) {
     const val = item.bindings[i]
     if (val instanceof Date) item.bindings[i] = dayjs(val).unix()

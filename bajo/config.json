@@ -1,4 +1,7 @@
 {
   "alias": "knex",
+  "manticore": {
+    "maxMatches": 1000
+  },
   "dependencies": ["bajo-db"]
 }

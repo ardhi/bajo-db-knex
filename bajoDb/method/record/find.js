@@ -3,7 +3,7 @@ import getCount from './count.js'
 async function find ({ schema, filter = {}, options = {} } = {}) {
   const { importPkg, importModule, currentLoc } = this.bajo.helper
   const { prepPagination, getInfo } = this.bajoDb.helper
-  const { forOwn } = await importPkg('lodash-es')
+  const { forOwn, omit } = await importPkg('lodash-es')
   const mongoKnex = await importPkg('bajo-db:@tryghost/mongo-knex')
   const { instance, driver } = await getInfo(schema)
   const { noLimit, dataOnly, noCount } = options
@@ -26,7 +26,9 @@ async function find ({ schema, filter = {}, options = {} } = {}) {
     }
     result = await data
   }
-  return { data: result, page, limit, count, pages: Math.ceil(count / limit) }
+  result = { data: result, page, limit, count, pages: Math.ceil(count / limit) }
+  if (noCount) result = omit(result, ['count', 'pages'])
+  return result
 }
 
 export default find

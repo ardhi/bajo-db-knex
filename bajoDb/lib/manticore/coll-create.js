@@ -20,7 +20,7 @@ async function collCreate (schema) {
   await instance.client.schema.createTable(schema.collName, table => {
     for (const p of schema.properties) {
       if (p.name === 'id') continue
-      if (schema.fullText.fields.includes(p.name)) table.specificType(p.name, 'text')
+      if (schema.fullText.fields.includes(p.name)) table.specificType(p.name, 'string attribute indexed')
       else table.specificType(p.name, stype[p.type])
     }
     if (schema.engine) table.engine(`'${schema.engine}'`)

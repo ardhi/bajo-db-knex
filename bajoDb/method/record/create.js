@@ -2,6 +2,7 @@ import getRecord from './get.js'
 
 async function create ({ schema, body, options = {} } = {}) {
   const { isSet, importPkg, importModule, currentLoc } = this.bajo.helper
+  const { noResult } = options
   const { getInfo } = this.bajoDb.helper
   const { pick } = await importPkg('lodash-es')
   const { instance, returning, driver } = await getInfo(schema)
@@ -12,7 +13,7 @@ async function create ({ schema, body, options = {} } = {}) {
   const mod = await importModule(`${currentLoc(import.meta).dir}/../../lib/${driver.type}/record-create.js`)
   if (mod) result = await mod.call(this, { schema, body, options })
   else result = await instance.client(schema.collName).insert(body, ...returning)
-  if (options.noResult) return
+  if (noResult) return
   if (!driver.returning) {
     const resp = await getRecord.call(this, { schema, id: result[0], options: { thrownNotFound: false } })
     if (returning[0].length > 0) resp.data = pick(resp.data, returning[0])

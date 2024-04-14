@@ -23,7 +23,7 @@ async function find ({ schema, filter = {}, options = {} } = {}) {
   }
   const item = data.toSQL().toNative()
   item.sql = item.sql.replaceAll('`' + schema.collName + '`.', '')
-  const maxMatches = get(options, 'req.query.maxMatches', cfg.manticore.maxMatches)
+  const maxMatches = get(options, 'req.headers.x-max-matches', cfg.manticore.maxMatches)
   item.sql += ` option max_matches=${maxMatches}`
   for (const i in item.bindings) {
     const val = item.bindings[i]

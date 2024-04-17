@@ -9,7 +9,7 @@ async function update ({ schema, id, body, options } = {}) {
   for (const p of schema.properties) {
     if (['object', 'array'].includes(p.type) && isSet(body[p.name])) body[p.name] = JSON.stringify(body[p.name])
   }
-  const old = noResult ? undefined : await getRecord.call(this, { schema, id })
+  const old = await getRecord.call(this, { schema, id })
   let result
   const mod = await importModule(`${currentLoc(import.meta).dir}/../../lib/${driver.type}/record-update.js`)
   if (mod) result = await mod.call(this, { schema, id, body, oldBody: old.data, options })

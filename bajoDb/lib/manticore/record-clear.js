@@ -1,6 +1,6 @@
 async function clear ({ schema } = {}) {
   const { getInfo } = this.bajoDb.helper
-  const { instance } = await getInfo(schema)
+  const { instance } = getInfo(schema)
   await instance.client.raw(`truncate table ${schema.collName}`)
 }
 

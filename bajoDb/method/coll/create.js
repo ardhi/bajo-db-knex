@@ -1,8 +1,7 @@
 export async function create (schema, applyTable, applyColumn) {
-  const { importPkg } = this.bajo.helper
   const { getInfo } = this.bajoDb.helper
-  const { instance, driver } = await getInfo(schema)
-  const { has, omit, cloneDeep, isEmpty } = await importPkg('lodash-es')
+  const { instance, driver } = getInfo(schema)
+  const { has, omit, cloneDeep, isEmpty } = this.bajo.helper._
   await instance.client.schema.createTable(schema.collName, table => {
     for (let p of schema.properties) {
       if (p.name === 'id' && driver.forceDefaultId) continue
@@ -52,7 +51,7 @@ export async function create (schema, applyTable, applyColumn) {
 async function collCreate (schema) {
   const { currentLoc, importModule } = this.bajo.helper
   const { getInfo } = this.bajoDb.helper
-  const { driver } = await getInfo(schema)
+  const { driver } = getInfo(schema)
   const mod = await importModule(`${currentLoc(import.meta).dir}/../../lib/${driver.type}/coll-create.js`)
   if (mod) return await mod.call(this, schema)
   return await create.call(this, schema)

@@ -1,7 +1,7 @@
 async function get ({ schema, id, options = {} } = {}) {
   const { error, importModule, currentLoc } = this.bajo.helper
   const { getInfo } = this.bajoDb.helper
-  const { instance, driver } = await getInfo(schema)
+  const { instance, driver } = getInfo(schema)
   const { thrownNotFound = true } = options
   let result
   const mod = await importModule(`${currentLoc(import.meta).dir}/../../lib/${driver.type}/record-get.js`)

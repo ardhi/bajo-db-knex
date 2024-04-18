@@ -2,7 +2,7 @@ import { create } from '../../method/coll/create.js'
 
 async function collCreate (schema) {
   const { getInfo } = this.bajoDb.helper
-  const { instance } = await getInfo(schema)
+  const { instance } = getInfo(schema)
   await create.call(this, schema)
 
   function printCols (prefix) {

@@ -1,10 +1,9 @@
 import path from 'path'
 
 async function connSanitizer (item) {
-  const { fatal, getConfig, importPkg, resolvePath } = this.bajo.helper
+  const { fs, fatal, getConfig, resolvePath } = this.bajo.helper
   if (!item.connection) fatal('\'%s@%s\' key is required', 'connection', item.name, { payload: item })
-  const { isEmpty, pick } = await importPkg('lodash-es')
-  const fs = await importPkg('fs-extra')
+  const { isEmpty, pick } = this.bajo.helper._
   const config = getConfig()
   const newItem = pick(item, ['name', 'type', 'connection'])
   for (const i of ['database', 'user', 'password']) {

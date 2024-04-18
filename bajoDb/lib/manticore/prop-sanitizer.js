@@ -1,7 +1,7 @@
 async function propSanitizer ({ prop, schema, driver }) {
-  const { importPkg, getConfig, fatal } = this.bajo.helper
+  const { getConfig, fatal } = this.bajo.helper
   const { propType } = this.bajoDb.helper
-  const { has, get, each } = await importPkg('lodash-es')
+  const { has, get, each } = this.bajo.helper._
   const opts = getConfig('bajoDb')
   const def = propType[prop.type]
   if (prop.name === 'id') {

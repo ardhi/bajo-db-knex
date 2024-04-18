@@ -1,6 +1,5 @@
 async function applyFulltext (data, match) {
-  const { importPkg } = this.bajo.helper
-  const { forOwn, isEmpty } = await importPkg('lodash-es')
+  const { forOwn, isEmpty } = this.bajo.helper._
   const matches = []
   forOwn(match, (v, k) => {
     if (!isEmpty(v)) matches.push(`@${k} ${v.join(' ')}`)

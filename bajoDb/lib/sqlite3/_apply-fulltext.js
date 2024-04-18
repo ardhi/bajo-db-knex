@@ -1,6 +1,5 @@
 async function applyFulltext (schema, data, match) {
-  const { importPkg } = this.bajo.helper
-  const { isEmpty } = await importPkg('lodash-es')
+  const { isEmpty } = this.bajo.helper._
   const matchers = []
   if (!isEmpty(match['*'])) {
     matchers.push(match['*'])

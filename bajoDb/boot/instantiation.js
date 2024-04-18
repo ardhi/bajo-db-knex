@@ -10,10 +10,9 @@ const extDialect = {
 }
 
 async function instantiation ({ connection, schemas, noRebuild }) {
-  const { importPkg, log, fatal, error, currentLoc } = this.bajo.helper
+  const { fs, importPkg, log, fatal, error, currentLoc } = this.bajo.helper
   const { drivers } = this.bajoDbKnex.helper
-  const { merge, pick, find } = await importPkg('lodash-es')
-  const fs = await importPkg('fs-extra')
+  const { merge, pick, find } = this.bajo.helper._
   this.bajoDbKnex.instances = this.bajoDbKnex.instances ?? []
   const driverPkg = find(drivers, { name: connection.type })
   const dialect = driverPkg.dialect ?? connection.type

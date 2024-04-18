@@ -3,9 +3,9 @@ import applyFulltext from './_apply-fulltext.js'
 async function find ({ schema, filter = {}, options = {} } = {}) {
   const { importPkg } = this.bajo.helper
   const { prepPagination, getInfo } = this.bajoDb.helper
-  const { forOwn } = await importPkg('lodash-es')
-  const mongoKnex = await importPkg('bajo-db:@tryghost/mongo-knex')
-  const { instance } = await getInfo(schema)
+  const { forOwn } = this.bajo.helper._
+  const mongoKnex = await importPkg('bajoDb:@tryghost/mongo-knex')
+  const { instance } = getInfo(schema)
   const { noLimit } = options
   const { limit, skip, query, sort, match } = await prepPagination(filter, schema)
   let data = instance.client(schema.collName)

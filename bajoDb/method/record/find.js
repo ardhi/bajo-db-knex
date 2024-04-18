@@ -3,9 +3,9 @@ import getCount from './count.js'
 async function find ({ schema, filter = {}, options = {} } = {}) {
   const { importPkg, importModule, currentLoc } = this.bajo.helper
   const { prepPagination, getInfo } = this.bajoDb.helper
-  const { forOwn, omit } = await importPkg('lodash-es')
-  const mongoKnex = await importPkg('bajo-db:@tryghost/mongo-knex')
-  const { instance, driver } = await getInfo(schema)
+  const { forOwn, omit } = this.bajo.helper._
+  const mongoKnex = await importPkg('bajoDb:@tryghost/mongo-knex')
+  const { instance, driver } = getInfo(schema)
   const { limit, skip, query, sort, page } = await prepPagination(filter, schema)
   let count = 0
   if (options.count && !options.dataOnly) count = (await getCount.call(this, { schema, filter, options }) || {}).data

@@ -1,11 +1,11 @@
 import getRecord from './get.js'
 
 async function update ({ schema, id, body, options } = {}) {
-  const { isSet, importModule, currentLoc, importPkg } = this.bajo.helper
+  const { isSet, importModule, currentLoc } = this.bajo.helper
   const { noResult } = options
   const { getInfo } = this.bajoDb.helper
-  const { pick } = await importPkg('lodash-es')
-  const { instance, returning, driver } = await getInfo(schema)
+  const { pick } = this.bajo.helper._
+  const { instance, returning, driver } = getInfo(schema)
   for (const p of schema.properties) {
     if (['object', 'array'].includes(p.type) && isSet(body[p.name])) body[p.name] = JSON.stringify(body[p.name])
   }

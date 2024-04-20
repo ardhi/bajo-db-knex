@@ -1,6 +1,6 @@
 {
   "name": "bajo-db-knex",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Bajo DB Knex/SQL driver for Bajo Framework",
   "main": "index.js",
   "scripts": {

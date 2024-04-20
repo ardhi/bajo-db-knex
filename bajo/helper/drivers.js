@@ -58,7 +58,6 @@ export default [
     name: 'manticore',
     dialect: 'mysql',
     adapter: 'mysql',
-    forceDefaultId: true,
     lowerCaseColl: true,
     returning: false
   }

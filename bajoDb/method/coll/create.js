@@ -1,10 +1,9 @@
 export async function create (schema, applyTable, applyColumn) {
   const { getInfo } = this.bajoDb.helper
-  const { instance, driver } = getInfo(schema)
+  const { instance } = getInfo(schema)
   const { has, omit, cloneDeep, isEmpty } = this.bajo.helper._
   await instance.client.schema.createTable(schema.collName, table => {
     for (let p of schema.properties) {
-      if (p.name === 'id' && driver.forceDefaultId) continue
       p = cloneDeep(p)
       if (p.specificType) {
         table.specificType(p.name, p.specificType)

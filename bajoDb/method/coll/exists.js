@@ -1,4 +1,4 @@
-async function exists (schema) {
+async function exists ({ schema, options = {} }) {
   const { importModule, currentLoc } = this.bajo.helper
   const { getInfo } = this.bajoDb.helper
   const { instance, driver } = getInfo(schema)

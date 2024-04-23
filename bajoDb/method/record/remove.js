@@ -1,6 +1,6 @@
 import getRecord from './get.js'
 
-async function remove ({ schema, id, options = {} } = {}) {
+async function remove ({ schema, id, options = {} }) {
   const { importModule, currentLoc } = this.bajo.helper
   const { noResult } = options
   const { getInfo } = this.bajoDb.helper

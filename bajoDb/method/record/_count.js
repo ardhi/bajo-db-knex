@@ -1,4 +1,4 @@
-async function count ({ schema, filter = {}, options = {} } = {}) {
+async function count ({ schema, type, filter = {}, options = {} }) {
   const { importModule, currentLoc, importPkg } = this.bajo.helper
   const { prepPagination, getInfo } = this.bajoDb.helper
   const { instance, driver } = getInfo(schema)
@@ -6,7 +6,7 @@ async function count ({ schema, filter = {}, options = {} } = {}) {
   const { query } = await prepPagination(filter, schema)
   // count
   let result
-  const mod = await importModule(`${currentLoc(import.meta).dir}/../../lib/${driver.type}/record-count.js`)
+  const mod = await importModule(`${currentLoc(import.meta).dir}/../../lib/${driver.type}/_record-count.js`)
   if (mod) result = await mod.call(this, { schema, filter, options })
   else {
     result = instance.client(schema.collName)

@@ -1,4 +1,4 @@
-async function get ({ schema, id, options = {} } = {}) {
+async function get ({ schema, id, options = {} }) {
   const { error, importModule, currentLoc } = this.bajo.helper
   const { getInfo } = this.bajoDb.helper
   const { instance, driver } = getInfo(schema)

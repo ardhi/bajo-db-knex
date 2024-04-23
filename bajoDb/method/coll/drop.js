@@ -1,4 +1,4 @@
-async function drop (schema) {
+async function drop ({ schema, options = {} }) {
   const { importModule, currentLoc } = this.bajo.helper
   const { getInfo } = this.bajoDb.helper
   const { instance, driver } = getInfo(schema)

@@ -47,7 +47,7 @@ export async function create (schema, applyTable, applyColumn) {
   })
 }
 
-async function collCreate (schema) {
+async function collCreate ({ schema, options = {} }) {
   const { currentLoc, importModule } = this.bajo.helper
   const { getInfo } = this.bajoDb.helper
   const { driver } = getInfo(schema)

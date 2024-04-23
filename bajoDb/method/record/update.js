@@ -1,6 +1,6 @@
 import getRecord from './get.js'
 
-async function update ({ schema, id, body, options } = {}) {
+async function update ({ schema, id, body, options }) {
   const { isSet, importModule, currentLoc } = this.bajo.helper
   const { noResult } = options
   const { getInfo } = this.bajoDb.helper

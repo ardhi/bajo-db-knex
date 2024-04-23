@@ -9,7 +9,7 @@ const stripWarns = [
 const extDialect = {
 }
 
-async function instantiation ({ connection, schemas, noRebuild }) {
+async function instantiation ({ connection, schemas, noRebuild = true }) {
   const { fs, importPkg, log, fatal, error, currentLoc } = this.bajo.helper
   const { drivers } = this.bajoDbKnex.helper
   const { merge, pick, find } = this.bajo.helper._

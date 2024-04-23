@@ -1,6 +1,6 @@
-import getCount from './count.js'
+import getCount from './_count.js'
 
-async function find ({ schema, filter = {}, options = {} } = {}) {
+async function find ({ schema, filter = {}, options = {} }) {
   const { importPkg, importModule, currentLoc } = this.bajo.helper
   const { prepPagination, getInfo } = this.bajoDb.helper
   const { forOwn, omit } = this.bajo.helper._

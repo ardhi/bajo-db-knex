@@ -6,7 +6,7 @@ async function find ({ schema, filter = {}, options = {} }) {
   const { forOwn, omit } = this.bajo.helper._
   const mongoKnex = await importPkg('bajoDb:@tryghost/mongo-knex')
   const { instance, driver } = getInfo(schema)
-  const { limit, skip, query, sort, page } = await prepPagination(filter, schema)
+  const { limit, skip, sort, page } = await prepPagination(filter, schema)
   let count = 0
   if (options.count && !options.dataOnly) count = (await getCount.call(this, { schema, filter, options }) || {}).data
   let result
@@ -14,7 +14,7 @@ async function find ({ schema, filter = {}, options = {} }) {
   if (mod) result = await mod.call(this, { schema, filter, options })
   else {
     let data = instance.client(schema.collName)
-    if (query) data = mongoKnex(data, query)
+    if (filter.query) data = mongoKnex(data, filter.query)
     if (!options.noLimit) data.limit(limit, { skipBinding: true }).offset(skip)
     if (sort) {
       const sorts = []

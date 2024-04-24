@@ -4,11 +4,11 @@ async function count ({ schema, filter, options = {} }) {
   const { getInfo, prepPagination } = this.bajoDb.helper
   const { instance } = getInfo(schema)
   const mongoKnex = await importPkg('bajoDb:@tryghost/mongo-knex')
-  const { query, limit, skip, sort, page } = await prepPagination(filter, schema, { allowSortUnindexed: true })
+  const { limit, skip, sort, page } = await prepPagination(filter, schema, { allowSortUnindexed: true })
   const fields = options.fields ?? ['*']
   const [field] = fields
   let cursor = instance.client(schema.collName)
-  if (query) cursor = mongoKnex(cursor, query)
+  if (filter.query) cursor = mongoKnex(cursor, filter.query)
   if (field === '*') {
     const data = await cursor.count(field, { as: 'count' })
     return { data, page, limit }

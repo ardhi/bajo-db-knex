@@ -4,13 +4,13 @@ async function common ({ schema, filter, options = {} }) {
   const { getInfo, prepPagination, aggregateTypes } = this.bajoDb.helper
   const { instance } = getInfo(schema)
   const mongoKnex = await importPkg('bajoDb:@tryghost/mongo-knex')
-  const { query, limit, skip, sort, page } = await prepPagination(filter, schema, { allowSortUnindexed: true })
+  const { limit, skip, sort, page } = await prepPagination(filter, schema, { allowSortUnindexed: true })
   const group = options.group
   if (!group) throw error('Field to group aggregate is missing')
   const [field] = options.fields ?? []
   if (!field) throw error('Field to calculate aggregate is missing')
   let cursor = instance.client(schema.collName)
-  if (query) cursor = mongoKnex(cursor, query)
+  if (filter.query) cursor = mongoKnex(cursor, filter.query)
   if (!options.noLimit) cursor.limit(limit, { skipBinding: true }).offset(skip)
   cursor.select(group).groupBy(group)
   if (sort) {

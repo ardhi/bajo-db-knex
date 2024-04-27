@@ -1,7 +1,6 @@
 async function propSanitizer ({ prop, schema, driver }) {
-  const { importModule, getConfig, fatal } = this.bajo.helper
-  const cfg = getConfig('bajoDb', { full: true })
-  const genericPropSanitizer = await importModule(`${cfg.dir.pkg}/lib/generic-prop-sanitizer.js`)
+  const { importModule, fatal } = this.bajo.helper
+  const genericPropSanitizer = await importModule('bajoDb:/lib/generic-prop-sanitizer.js')
   await genericPropSanitizer.call(this, { prop, schema, driver })
   const idProp = schema.properties.find(p => p.name === 'id')
   if (!idProp) return

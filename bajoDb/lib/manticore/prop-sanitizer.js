@@ -1,5 +1,5 @@
 async function propSanitizer ({ prop, schema, driver }) {
-  const { getConfig, fatal } = this.bajo.helper
+  const { getConfig, fatal, join } = this.bajo.helper
   const { propType } = this.bajoDb.helper
   const { has, get, each } = this.bajo.helper._
   const opts = getConfig('bajoDb')
@@ -25,7 +25,7 @@ async function propSanitizer ({ prop, schema, driver }) {
       prop[p] = get(prop, p, get(opts, `defaults.property.${prop.type}.${p}`, def[p]))
       if (def.choices && !def.choices.includes(prop[p])) {
         fatal('Unsupported %s \'%s\' for \'%s@%s\'. Allowed choices: %s',
-          p, prop[p], prop.name, schema.name, def.choices.join(', '))
+          p, prop[p], prop.name, schema.name, join(def.choices))
       }
     })
   }

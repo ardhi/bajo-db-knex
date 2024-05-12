@@ -14,11 +14,12 @@ async function instantiation ({ connection, schemas, noRebuild = true }) {
   const { drivers } = this.bajoDbKnex.helper
   const { merge, pick, find } = this.bajo.helper._
   this.bajoDbKnex.instances = this.bajoDbKnex.instances ?? []
-  const driverPkg = find(drivers, { name: connection.type })
-  const dialect = driverPkg.dialect ?? connection.type
+  const [, type] = connection.type.split(':')
+  const driverPkg = find(drivers, { name: type })
+  const dialect = driverPkg.dialect ?? type
   let dialectFile = `${currentLoc(import.meta).dir}/dialect/${dialect}.js`
   if (!fs.existsSync(dialectFile)) dialectFile = `knex/lib/dialects/${dialect}/index.js`
-  const Dialect = extDialect[connection.type] ?? (await import(dialectFile)).default
+  const Dialect = extDialect[type] ?? (await import(dialectFile)).default
   let driver
   try {
     driver = await importPkg(`app:${driverPkg.adapter}`, { thrownNotFound: true })
@@ -42,7 +43,7 @@ async function instantiation ({ connection, schemas, noRebuild = true }) {
   }
   instance.client = knex(merge({}, connection, { log: knexLog, client: Dialect }))
   this.bajoDbKnex.instances.push(instance)
-  const isMem = connection.type === 'sqlite3' && connection.connection.filename === ':memory:'
+  const isMem = type === 'sqlite3' && connection.connection.filename === ':memory:'
   if (isMem) noRebuild = false
   if (noRebuild) return
   for (const schema of schemas) {

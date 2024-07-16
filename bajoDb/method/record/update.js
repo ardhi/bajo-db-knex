@@ -1,10 +1,10 @@
 import getRecord from './get.js'
 
 async function update ({ schema, id, body, options }) {
-  const { isSet, importModule, currentLoc } = this.bajo.helper
+  const { isSet, importModule, currentLoc } = this.app.bajo
   const { noResult } = options
-  const { getInfo } = this.bajoDb.helper
-  const { pick } = this.bajo.helper._
+  const { getInfo } = this.app.bajoDb
+  const { pick } = this.app.bajo.lib._
   const { instance, returning, driver } = getInfo(schema)
   for (const p of schema.properties) {
     if (['object', 'array'].includes(p.type) && isSet(body[p.name])) body[p.name] = JSON.stringify(body[p.name])

@@ -1,11 +1,12 @@
 import path from 'path'
 
 async function connSanitizer (item) {
-  const { fs, fatal, getPluginDataDir } = this.bajo.helper
-  if (!item.connection) fatal('\'%s@%s\' key is required', 'connection', item.name, { payload: item })
-  const { isEmpty, pick } = this.bajo.helper._
+  const { getPluginDataDir } = this.app.bajo
+  const { fs } = this.app.bajo.lib
+  if (!item.connection) this.fatal('\'%s@%s\' key is required', 'connection', item.name, { payload: item })
+  const { isEmpty, pick } = this.app.bajo.lib._
   const newItem = pick(item, ['name', 'type', 'connection'])
-  if (!item.connection.filename) fatal('\'%s@%s\' key is required', 'filename', item.name, { payload: item })
+  if (!item.connection.filename) this.fatal('\'%s@%s\' key is required', 'filename', item.name, { payload: item })
   const isMem = item.connection.filename === ':memory:'
   const isAbs = path.isAbsolute(item.connection.filename)
   const isUp = item.connection.filename.startsWith('../')

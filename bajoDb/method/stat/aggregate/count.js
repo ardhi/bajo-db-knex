@@ -1,7 +1,7 @@
 async function count ({ schema, filter, options = {} }) {
-  const { importPkg } = this.bajo.helper
-  const { camelCase } = this.bajo.helper._
-  const { getInfo, prepPagination } = this.bajoDb.helper
+  const { importPkg } = this.app.bajo
+  const { camelCase } = this.app.bajo.lib._
+  const { getInfo, prepPagination } = this.app.bajoDb
   const { instance } = getInfo(schema)
   const mongoKnex = await importPkg('bajoDb:@tryghost/mongo-knex')
   const { limit, skip, sort, page } = await prepPagination(filter, schema, { allowSortUnindexed: true })

@@ -1,16 +1,16 @@
 import path from 'path'
 
 async function connSanitizer (item) {
-  const { fs, fatal, getConfig, resolvePath } = this.bajo.helper
-  if (!item.connection) fatal('\'%s@%s\' key is required', 'connection', item.name, { payload: item })
-  const { isEmpty, pick } = this.bajo.helper._
-  const config = getConfig()
+  const { resolvePath, getPluginDataDir } = this.app.bajo
+  const { fs } = this.app.bajo.lib
+  if (!item.connection) this.fatal('\'%s@%s\' key is required', 'connection', item.name, { payload: item })
+  const { isEmpty, pick } = this.app.bajo.lib._
   const newItem = pick(item, ['name', 'type', 'connection'])
   for (const i of ['database', 'user', 'password']) {
-    if (!item.connection[i]) fatal('\'%s@%s\' key is required', i, item.name, { payload: item })
+    if (!item.connection[i]) this.fatal('\'%s@%s\' key is required', i, item.name, { payload: item })
   }
   if (!path.isAbsolute(item.connection.database)) {
-    let file = resolvePath(`${config.dir.data}/db/${item.connection.database}`)
+    let file = resolvePath(`${getPluginDataDir(this.name)}/db/${item.connection.database}`)
     const ext = path.extname(file)
     if (isEmpty(ext)) file += '.fdb'
     fs.ensureDirSync(path.dirname(file))

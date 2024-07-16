@@ -1,8 +1,8 @@
 import applyFulltext from './_apply-fulltext.js'
 
 async function count ({ schema, filter = {}, options = {} } = {}) {
-  const { importPkg } = this.bajo.helper
-  const { getInfo } = this.bajoDb.helper
+  const { importPkg } = this.app.bajo
+  const { getInfo } = this.app.bajoDb
   const { instance } = getInfo(schema)
   const mongoKnex = await importPkg('bajoDb:@tryghost/mongo-knex')
   let result = instance.client(schema.collName)

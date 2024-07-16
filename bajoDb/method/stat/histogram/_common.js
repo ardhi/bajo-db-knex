@@ -1,15 +1,15 @@
 async function common ({ handler, schema, filter, options = {} }) {
-  const { importPkg, error } = this.bajo.helper
-  const { getInfo, prepPagination } = this.bajoDb.helper
+  const { importPkg } = this.app.bajo
+  const { getInfo, prepPagination } = this.app.bajoDb
   const { instance } = getInfo(schema)
   const mongoKnex = await importPkg('bajoDb:@tryghost/mongo-knex')
   const { limit, skip, sort, page } = await prepPagination(filter, schema, { allowSortUnindexed: true })
   let cursor = instance.client(schema.collName)
   const [field] = options.fields ?? []
-  if (!field) throw error('Base field for histogram must be provided')
+  if (!field) throw this.error('Base field for histogram must be provided')
   const prop = schema.properties.find(p => p.name === field)
-  if (!prop) throw error('Unknown base field for histogram \'%s\'', field)
-  if (!['datetime', 'date'].includes(prop.type)) throw error('Field type \'%s@%s\' must be a datetime field', field, schema.name)
+  if (!prop) throw this.error('Unknown base field for histogram \'%s\'', field)
+  if (!['datetime', 'date'].includes(prop.type)) throw this.error('Field type \'%s@%s\' must be a datetime field', field, schema.name)
   const aggregate = options.aggregate ?? 'count'
   const group = aggregate === 'count' ? '*' : options.group
   if (filter.query) cursor = mongoKnex(cursor, filter.query)

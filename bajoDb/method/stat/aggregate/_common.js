@@ -1,14 +1,14 @@
 async function common ({ schema, filter, options = {} }) {
-  const { importPkg, error } = this.bajo.helper
-  const { camelCase } = this.bajo.helper._
-  const { getInfo, prepPagination, aggregateTypes } = this.bajoDb.helper
+  const { importPkg } = this.app.bajo
+  const { camelCase } = this.app.bajo.lib._
+  const { getInfo, prepPagination, aggregateTypes } = this.app.bajoDb
   const { instance } = getInfo(schema)
   const mongoKnex = await importPkg('bajoDb:@tryghost/mongo-knex')
   const { limit, skip, sort, page } = await prepPagination(filter, schema, { allowSortUnindexed: true })
   const group = options.group
-  if (!group) throw error('Field to group aggregate is missing')
+  if (!group) throw this.error('Field to group aggregate is missing')
   const [field] = options.fields ?? []
-  if (!field) throw error('Field to calculate aggregate is missing')
+  if (!field) throw this.error('Field to calculate aggregate is missing')
   let cursor = instance.client(schema.collName)
   if (filter.query) cursor = mongoKnex(cursor, filter.query)
   if (!options.noLimit) cursor.limit(limit, { skipBinding: true }).offset(skip)
@@ -20,7 +20,7 @@ async function common ({ schema, filter, options = {} }) {
     cursor.orderBy(f, d)
   }
   for (const t of (options.aggregate ?? '').split(',')) {
-    if (!aggregateTypes.includes(t)) throw error('Unsupported aggregate: \'%s\'', t)
+    if (!aggregateTypes.includes(t)) throw this.error('Unsupported aggregate: \'%s\'', t)
     cursor[t](field, { as: camelCase(`${field} ${t}`) })
   }
   const data = await cursor

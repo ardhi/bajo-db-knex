@@ -1,7 +1,7 @@
 async function clear ({ schema, options = {} }) {
-  const { importModule, currentLoc } = this.bajo.helper
+  const { importModule, currentLoc } = this.app.bajo
   const { truncate = true } = options
-  const { getInfo } = this.bajoDb.helper
+  const { getInfo } = this.app.bajoDb
   const { instance, driver } = getInfo(schema)
   const method = truncate ? 'truncate' : 'del'
   const mod = await importModule(`${currentLoc(import.meta).dir}/../../lib/${driver.type}/coll-clear.js`)

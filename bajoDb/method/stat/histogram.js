@@ -1,6 +1,7 @@
 async function histogram ({ schema, filter = {}, options = {} }) {
-  const { importModule, currentLoc, fs } = this.bajo.helper
-  const { getInfo } = this.bajoDb.helper
+  const { importModule, currentLoc } = this.app.bajo
+  const { fs } = this.app.bajo.lib
+  const { getInfo } = this.app.bajoDb
   const { driver } = getInfo(schema)
   let file = `${currentLoc(import.meta).dir}/../../lib/${driver.type}/stat-histogram-${options.type}.js`
   if (!fs.existsSync(file)) file = `${currentLoc(import.meta).dir}/histogram/${options.type}.js`

@@ -15,7 +15,7 @@ const stype = {
 }
 
 async function collCreate (schema) {
-  const { getInfo } = this.bajoDb.helper
+  const { getInfo } = this.app.bajoDb
   const { instance } = getInfo(schema)
   await instance.client.schema.createTable(schema.collName, table => {
     for (const p of schema.properties) {

@@ -1,8 +1,7 @@
 async function propSanitizer ({ prop, schema, driver }) {
-  const { getConfig, fatal, join } = this.bajo.helper
-  const { propType } = this.bajoDb.helper
-  const { has, get, each } = this.bajo.helper._
-  const opts = getConfig('bajoDb')
+  const { join } = this.app.bajo
+  const { propType } = this.app.bajoDb
+  const { has, get, each } = this.app.bajo.lib._
   const def = propType[prop.type]
   if (prop.name === 'id') {
     prop.type = 'integer'
@@ -22,9 +21,9 @@ async function propSanitizer ({ prop, schema, driver }) {
         delete prop[p]
         return undefined
       }
-      prop[p] = get(prop, p, get(opts, `defaults.property.${prop.type}.${p}`, def[p]))
+      prop[p] = get(prop, p, get(this.app.bajoDb.config, `defaults.property.${prop.type}.${p}`, def[p]))
       if (def.choices && !def.choices.includes(prop[p])) {
-        fatal('Unsupported %s \'%s\' for \'%s@%s\'. Allowed choices: %s',
+        this.fatal('Unsupported %s \'%s\' for \'%s@%s\'. Allowed choices: %s',
           p, prop[p], prop.name, schema.name, join(def.choices))
       }
     })

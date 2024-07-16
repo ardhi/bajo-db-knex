@@ -1,7 +1,7 @@
 export async function create (schema, applyTable, applyColumn) {
-  const { getInfo } = this.bajoDb.helper
+  const { getInfo } = this.app.bajoDb
   const { instance } = getInfo(schema)
-  const { has, omit, cloneDeep, isEmpty } = this.bajo.helper._
+  const { has, omit, cloneDeep, isEmpty } = this.app.bajo.lib._
   await instance.client.schema.createTable(schema.collName, table => {
     for (let p of schema.properties) {
       p = cloneDeep(p)
@@ -48,8 +48,8 @@ export async function create (schema, applyTable, applyColumn) {
 }
 
 async function collCreate ({ schema, options = {} }) {
-  const { currentLoc, importModule } = this.bajo.helper
-  const { getInfo } = this.bajoDb.helper
+  const { currentLoc, importModule } = this.app.bajo
+  const { getInfo } = this.app.bajoDb
   const { driver } = getInfo(schema)
   const mod = await importModule(`${currentLoc(import.meta).dir}/../../lib/${driver.type}/coll-create.js`)
   if (mod) return await mod.call(this, schema)

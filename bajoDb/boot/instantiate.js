@@ -9,13 +9,13 @@ const stripWarns = [
 const extDialect = {
 }
 
-async function instantiation ({ connection, schemas, noRebuild = true }) {
-  const { fs, importPkg, log, fatal, error, currentLoc } = this.bajo.helper
-  const { drivers } = this.bajoDbKnex.helper
-  const { merge, pick, find } = this.bajo.helper._
-  this.bajoDbKnex.instances = this.bajoDbKnex.instances ?? []
+async function instantiate ({ connection, schemas, noRebuild = true }) {
+  const { importPkg, currentLoc } = this.app.bajo
+  const { fs } = this.app.bajo.lib
+  const { merge, pick, find } = this.app.bajo.lib._
+  this.instances = this.instances ?? []
   const [, type] = connection.type.split(':')
-  const driverPkg = find(drivers, { name: type })
+  const driverPkg = find(this.drivers, { name: type })
   const dialect = driverPkg.dialect ?? type
   let dialectFile = `${currentLoc(import.meta).dir}/dialect/${dialect}.js`
   if (!fs.existsSync(dialectFile)) dialectFile = `knex/lib/dialects/${dialect}/index.js`
@@ -24,25 +24,25 @@ async function instantiation ({ connection, schemas, noRebuild = true }) {
   try {
     driver = await importPkg(`app:${driverPkg.adapter}`, { thrownNotFound: true })
   } catch (err) {
-    throw error('Problem with \'%s\' driver file. Not installed yet?', driverPkg.adapter)
+    throw this.error('Problem with \'%s\' driver file. Not installed yet?', driverPkg.adapter)
   }
   Dialect.prototype._driver = () => driver
   const instance = pick(connection, ['name', 'type'])
   const knexLog = {
-    error: log.error,
-    debug: log.debug,
-    deprecate: log.warn,
+    error: this.log.error,
+    debug: this.log.debug,
+    deprecate: this.log.warn,
     warn: msg => {
       let match
       for (const w of stripWarns) {
         if (msg.includes(w)) match = true
       }
       if (match) return
-      return log.warn(msg)
+      return this.log.warn(msg)
     }
   }
   instance.client = knex(merge({}, connection, { log: knexLog, client: Dialect }))
-  this.bajoDbKnex.instances.push(instance)
+  this.instances.push(instance)
   const isMem = type === 'sqlite3' && connection.connection.filename === ':memory:'
   if (isMem) noRebuild = false
   if (noRebuild) return
@@ -51,12 +51,12 @@ async function instantiation ({ connection, schemas, noRebuild = true }) {
     if (!exists) {
       try {
         await collCreate.call(this, schema)
-        log.trace('Model \'%s@%s\' successfully built on the fly', schema.name, connection.name)
+        this.log.trace('Collection \'%s@%s\' successfully built on the fly', schema.name, connection.name)
       } catch (err) {
-        fatal('Unable to build model \'%s@%s\': %s', schema.name, connection.name, err.message)
+        this.fatal('Unable to build collection \'%s@%s\': %s', schema.name, connection.name, err.message)
       }
     }
   }
 }
 
-export default instantiation
+export default instantiate

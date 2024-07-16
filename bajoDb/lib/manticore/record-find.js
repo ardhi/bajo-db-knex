@@ -2,11 +2,12 @@ import sanitizeOutput from './_sanitize-output.js'
 import applyFulltext from './_apply-fulltext.js'
 
 async function find ({ schema, filter = {}, options = {} } = {}) {
-  const { importPkg, dayjs, getConfig } = this.bajo.helper
-  const { prepPagination, getInfo } = this.bajoDb.helper
-  const { forOwn, get } = this.bajo.helper._
+  const { importPkg } = this.app.bajo
+  const { dayjs } = this.app.bajo.lib
+  const { prepPagination, getInfo } = this.app.bajoDb
+  const { forOwn, get } = this.app.bajo.lib._
   const mongoKnex = await importPkg('bajoDb:@tryghost/mongo-knex')
-  const cfg = getConfig('bajoDbKnex')
+  const cfg = this.app.bajoDbKnex.config
   const { instance } = getInfo(schema)
   const { noLimit } = options
   const { limit, skip, sort } = await prepPagination(filter, schema)

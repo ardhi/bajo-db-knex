@@ -1,7 +1,7 @@
 import { create } from '../../method/coll/create.js'
 
 async function collCreate (schema) {
-  const { getInfo } = this.bajoDb.helper
+  const { getInfo } = this.app.bajoDb
   const { instance } = getInfo(schema)
   await create.call(this, schema)
 

@@ -1,6 +1,6 @@
 async function count ({ schema, type, filter = {}, options = {} }) {
-  const { importModule, currentLoc, importPkg } = this.bajo.helper
-  const { getInfo } = this.bajoDb.helper
+  const { importModule, currentLoc, importPkg } = this.app.bajo
+  const { getInfo } = this.app.bajoDb
   const { instance, driver } = getInfo(schema)
   const mongoKnex = await importPkg('bajoDb:@tryghost/mongo-knex')
   // count

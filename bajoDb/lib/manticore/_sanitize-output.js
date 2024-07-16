@@ -1,5 +1,5 @@
 function sanitizeOutput (body, schema) {
-  const { dayjs } = this.bajo.helper
+  const { dayjs } = this.app.bajo.lib
   const nbody = {}
   for (const k in body) {
     const v = body[k]

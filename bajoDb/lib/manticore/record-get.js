@@ -1,7 +1,7 @@
 import sanitizeOutput from './_sanitize-output.js'
 
 async function get ({ schema, id, options } = {}) {
-  const { getInfo } = this.bajoDb.helper
+  const { getInfo } = this.app.bajoDb
   const { instance } = getInfo(schema)
   const result = await instance.client(schema.collName).where('id', id)
   return result.map(r => {
